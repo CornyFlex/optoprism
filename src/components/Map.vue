@@ -1,6 +1,6 @@
 <template>
     <div class="wholePage" style="text-align:center;">
-        <div class="displayCoordinates" style="display: flex;; align-items: center; justify-content: space-between;">
+        <div class="displayCoordinates" style="display: flex; align-items: center; justify-content: space-between;">
             <div>
                 <h1>Your Coordinates:</h1>
                 <p>{{ myCoordinates.lat.toFixed(4) }} Latitude, {{ myCoordinates.lng.toFixed(4) }} Longtitude</p>
@@ -13,7 +13,7 @@
         <google-map
             :center="myCoordinates"
             :zoom="zoom"
-            style="width:1000px; height: 700px; margin: 0 auto; margin-top: 20px;"
+            style="width:100vw; height: 100vh; margin: 0 auto; margin-top: 20px;"
             ref="mapRef"
             @dragend="handleDrag"
         ></google-map>
@@ -87,16 +87,17 @@ export default {
 
 <style scoped>
 .displayCoordinates {
-    padding: 0 10%;
     margin: 0 auto;
+    width: 40vw;
+    padding: 20px 20px 0px 20px;
 }
-
 .displayCoordinates h1 {
     font-size: 25px;
     font-weight: bold;
 }
 
 .wholePage {
-    margin-top: 30px;
+    background-color: #4B515D;
+    color: white;
 }
 </style>
