@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="wholePage" style="text-align:center;">
         <div class="displayCoordinates" style="display: flex;; align-items: center; justify-content: space-between;">
             <div>
                 <h1>Your Coordinates:</h1>
@@ -13,7 +13,7 @@
         <google-map
             :center="myCoordinates"
             :zoom="zoom"
-            style="width:500px; height:300px; margin: 0 auto; margin-top:5%;"
+            style="width:1000px; height: 700px; margin: 0 auto; margin-top: 20px;"
             ref="mapRef"
             @dragend="handleDrag"
         ></google-map>
@@ -87,12 +87,16 @@ export default {
 
 <style scoped>
 .displayCoordinates {
-    padding: 0 15%;
+    padding: 0 10%;
     margin: 0 auto;
 }
 
 .displayCoordinates h1 {
     font-size: 25px;
     font-weight: bold;
+}
+
+.wholePage {
+    margin-top: 30px;
 }
 </style>

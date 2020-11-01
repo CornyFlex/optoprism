@@ -1,8 +1,12 @@
+import '@babel/polyfill'
+import 'mutationobserver-shim'
 import Vue from 'vue'
+import './plugins/bootstrap-vue'
 import App from './App.vue'
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
 import VueGeolocation from 'vue-browser-geolocation';
+
 
 Vue.use(VueGeolocation);
 Vue.use(Buefy)
