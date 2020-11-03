@@ -1,6 +1,6 @@
 <template>
-    <div class="wholePage" style="text-align:center;">
-        <div class="displayCoordinates" style="display: flex; align-items: center; justify-content: space-between;">
+    <div class="wholePage" style="text-align:center; width: 100vw;">
+        <div class="displayCoordinates" style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
             <div>
                 <h1>Your Coordinates:</h1>
                 <p>{{ myCoordinates.lat.toFixed(4) }} Latitude, {{ myCoordinates.lng.toFixed(4) }} Longtitude</p>
@@ -13,10 +13,14 @@
         <google-map
             :center="myCoordinates"
             :zoom="zoom"
-            style="width:100vw; height: 100vh; margin: 0 auto; margin-top: 20px;"
+            style="width:100vw; height: 100vh; max-width: 100%; margin: 0 auto; margin-top: 20px;"
             ref="mapRef"
             @dragend="handleDrag"
         ></google-map>
+
+        <a href="#" class="float">
+            <h5>Create Post</h5>
+        </a>
     </div>
 </template>
 
@@ -94,10 +98,42 @@ export default {
 .displayCoordinates h1 {
     font-size: 25px;
     font-weight: bold;
+    padding: 0px 10px;
+}
+.displayCoordinates p {
+    padding: 0px 10px;
 }
 
 .wholePage {
     background-color: #4B515D;
     color: white;
+    max-width: 100%;
 }
+
+.float {
+    position: fixed;
+    width: 150px;
+    height: 60px;
+    bottom: 100px;
+    right: 0px;
+    left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+    background-color:#dc3545;
+    color:#FFF;
+    border-radius:15px;
+	text-align: center;
+	box-shadow: 2px 2px 3px #999;
+    text-decoration: none;
+}
+
+.float:hover {
+    background-color: #c82333;
+}
+
+.float h5 {
+    vertical-align: center;
+    padding: 17px;
+}
+
 </style>

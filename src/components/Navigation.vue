@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-navbar toggleable="lg" type="dark" variant="dark" style="font-size: 20px;">
+        <b-navbar toggleable="lg" type="dark" variant="dark" style="font-size: 20px; width: 100vw; max-width: 100%;">
             <b-navbar-brand href="#">OptoPrism</b-navbar-brand>
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
