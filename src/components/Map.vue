@@ -17,10 +17,6 @@
             ref="mapRef"
             @dragend="handleDrag"
         ></google-map>
-
-        <a href="#" class="float">
-            <h5>Create Post</h5>
-        </a>
     </div>
 </template>
 
@@ -108,32 +104,6 @@ export default {
     background-color: #4B515D;
     color: white;
     max-width: 100%;
-}
-
-.float {
-    position: fixed;
-    width: 150px;
-    height: 60px;
-    bottom: 100px;
-    right: 0px;
-    left: 0px;
-    margin-right: auto;
-    margin-left: auto;
-    background-color:#dc3545;
-    color:#FFF;
-    border-radius:15px;
-	text-align: center;
-	box-shadow: 2px 2px 3px #999;
-    text-decoration: none;
-}
-
-.float:hover {
-    background-color: #c82333;
-}
-
-.float h5 {
-    vertical-align: center;
-    padding: 17px;
 }
 
 </style>
