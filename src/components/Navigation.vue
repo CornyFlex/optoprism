@@ -1,8 +1,8 @@
 <template>
     <div>
         <b-navbar toggleable="lg" type="dark" variant="dark" style="font-size: 20px; width: 100vw; max-width: 100%;">
-            <b-navbar-brand><router-link :to="{ name: 'MainMap' }" style="text-decoration:none;color:white;">OptoPrism</router-link></b-navbar-brand>
-
+            <b-navbar-brand v-if="signedIn"><router-link :to="{ name: 'MainMap' }" style="text-decoration:none;color:white;">OptoPrism</router-link></b-navbar-brand>
+            <b-navbar-brand v-else><router-link :to="{ name: 'About' }" style="text-decoration:none;color:white;">OptoPrism</router-link></b-navbar-brand>
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
             <b-collapse id="nav-collapse" is-nav>
