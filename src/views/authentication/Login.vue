@@ -26,15 +26,12 @@
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group id="stayLoggedIn">
-        <b-form-checkbox value="yes" name="loggedIn">Stay logged in</b-form-checkbox>
-      </b-form-group>
       <div v-if="error" class="error">{{ error.message }}</div>
       <b-form-group id="not-registered">
         Not registered? Register <router-link :to="{ name: 'Register' }">here</router-link>
       </b-form-group>
 
-      <b-button type="submit" variant="primary">Login</b-button>
+      <b-button type="submit" block size="lg" variant="primary">Login</b-button>
     </b-form>
   </div>
 </template>

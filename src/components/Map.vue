@@ -1,38 +1,66 @@
 <template>
     <div class="wholePage" style="text-align:center; width: 100vw;">
-        <div class="displayCoordinates" style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
-            <div>
-                <h1>Your Coordinates:</h1>
-                <p>{{ myCoordinates.lat.toFixed(4) }} Latitude, {{ myCoordinates.lng.toFixed(4) }} Longtitude</p>
-            </div>
-            <div>
-                <h1>Map Coordinates:</h1>
-                <p>{{ mapCoordinates.lat }} Latitude, {{ mapCoordinates.lng }} Longtitude</p>
-            </div>
-        </div>
         <google-map
             :center="myCoordinates"
             :zoom="zoom"
-            style="width:100vw; height: 100vh; max-width: 100%; margin: 0 auto; margin-top: 20px;"
+            style="width:100vw; height: 100vh; max-width: 100%; margin: 0 auto;"
             ref="mapRef"
             @dragend="handleDrag"
-        ></google-map>
+        >
+        <div v-if="savedLocations > 0">
+            <markermap
+                :key="index"
+                v-for="(m, index) in savedLocations"
+                :position="{lat: m.position.lat, lng: m.position.lng}"
+                :clickable="true"
+                :draggable="false"
+            />
+        </div>
+        </google-map>
+        <a class="float" v-show="signedIn"><router-link :to="{ name: 'AddPost' }" style="text-decoration:none;color:white;"><h5>Create Post</h5></router-link></a>
     </div>
 </template>
 
 <script>
+import { firebase } from "@firebase/app";
+import "@firebase/auth";
+import { db } from "../main"
+
 export default {
+
     data() {
+
         return {
+            // check for sign in:
+            signedIn: false,
+
+            // map information
             map: null,
             myCoordinates: {
                 lat: 0,
                 lng: 0
             },
-            zoom: 12
+            zoom: 12,
+
+            savedLocations: []
         }
+
+    },
+    beforeMount() {
+
+        // reference to list of posts
+        var ref = db.ref("PhotoGallery");
+
+        ref.on("value", function(snapshot) {
+            snapshot.forEach((childSnapshot) => {
+                this.savedLocations.push(childSnapshot.val());
+            })
+        }, function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
+        });
     },
     created() {
+
         // does user have saved center? use it instead of default:
         if(localStorage.center){
             this.myCoordinates = JSON.parse(localStorage.center);
@@ -49,6 +77,15 @@ export default {
         if(localStorage.zoom) {
             this.zoom = parseInt(localStorage.zoom);
         }
+
+        firebase.auth().onAuthStateChanged(user=> {
+            if(user) {
+                this.signedIn = true;
+            } else {
+                this.signedIn = false;
+            }
+        })
+
 
     },
     mounted() {
@@ -81,6 +118,7 @@ export default {
                 lng: this.map.getCenter().lng().toFixed(4)
             }
         }
+        
     }
 }
 </script>
@@ -106,4 +144,29 @@ export default {
     max-width: 100%;
 }
 
+.float {
+    position: fixed;
+    width: 150px;
+    height: 60px;
+    bottom: 100px;
+    right: 0px;
+    left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+    background-color:#dc3545;
+    color:#FFF;
+    border-radius:15px;
+	text-align: center;
+	box-shadow: 2px 2px 3px #999;
+    text-decoration: none;
+    z-index: 1;
+}
+.float:hover {
+    background-color: #c82333;
+}
+
+.float h5 {
+    vertical-align: center;
+    padding: 17px;
+}
 </style>

@@ -31,7 +31,7 @@
         Already have an account? Login <router-link :to="{ name: 'Login' }">here</router-link>
       </b-form-group>
 
-      <b-button type="submit" variant="danger">Register</b-button>
+      <b-button type="submit" block size="lg" variant="danger">Register</b-button>
     </b-form>
   </div>
 </template>

@@ -7,40 +7,41 @@ import VueRouter from 'vue-router'
 import Master from '@/views/Master'
 import axios from "axios";
 import firebase from "firebase/app";
+import 'firebase/database';
 
-const firebaseConfig = {
-    apiKey: "AIzaSyByKExnWUbcB8FTLO-JrnLTrxQt7paGqdQ",
-    authDomain: "optoprismauthentication.firebaseapp.com",
-    databaseURL: "https://optoprismauthentication.firebaseio.com",
-    projectId: "optoprismauthentication",
-    storageBucket: "optoprismauthentication.appspot.com",
-    messagingSenderId: "809575262020",
-    appId: "1:809575262020:web:55e171aa4fc7f5cabad911"
-};
-firebase.initializeApp(firebaseConfig)
+export const db = firebase
+    .initializeApp({
+        apiKey: "AIzaSyByKExnWUbcB8FTLO-JrnLTrxQt7paGqdQ",
+        authDomain: "optoprismauthentication.firebaseapp.com",
+        databaseURL: "https://optoprismauthentication.firebaseio.com",
+        projectId: "optoprismauthentication",
+        storageBucket: "optoprismauthentication.appspot.com",
+        messagingSenderId: "809575262020",
+        appId: "1:809575262020:web:55e171aa4fc7f5cabad911"
+    })
+    .database()
+
+export const markerRef = db.ref('PhotoGallery');
 
 
 Vue.use(VueRouter)
 
 Vue.prototype.$axios = axios;
 Vue.use(VueGeolocation);
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 import * as VueGoogleMaps from 'vue2-google-maps';
-import routes from './router'
-
-Vue.use(VueGoogleMaps, {
-    load: {
-        key: 'AIzaSyCt-2hDJH6w6yw7_VRVDjiyPB-7j8jnuII'
-    },
-    installComponents: false
-});
+import routes from './router';
 
 const router = new VueRouter({
     routes
 })
 
 Vue.component('google-map', VueGoogleMaps.Map);
+Vue.component('autocomplete', VueGoogleMaps.Autocomplete);
+Vue.component('markermap', VueGoogleMaps.Marker);
+Vue.component('marker-info', VueGoogleMaps.InfoWindow);
+
 new Vue({
     router,
     render: h => h(Master)
@@ -57,3 +58,11 @@ firebase.auth().onAuthStateChanged(user => {
         }).$mount('#app')
     }
 })
+
+Vue.use(VueGoogleMaps, {
+    load: {
+        key: 'AIzaSyCt-2hDJH6w6yw7_VRVDjiyPB-7j8jnuII',
+        libraries: "places"
+    },
+    installComponents: false
+});

@@ -7,7 +7,7 @@
 
             <b-collapse id="nav-collapse" is-nav>
             <b-navbar-nav>
-                <b-nav-item><router-link :to="{ name: 'About' }" style="text-decoration:none;color:white;">About</router-link></b-nav-item>
+                <b-nav-item v-show="!signedIn"><router-link :to="{ name: 'About' }" style="text-decoration:none;color:white;">About</router-link></b-nav-item>
                 <b-nav-item v-show="signedIn"><router-link :to="{ name: 'Gallery' }" style="text-decoration:none;color:white;">Gallery</router-link></b-nav-item>
             </b-navbar-nav>
 
@@ -17,15 +17,12 @@
                     <b-form-input size="md" class="mr-sm-2" placeholder="Search city"></b-form-input>
                     <b-button size="md" class="my-2 my-sm-0" type="submit" variant="danger">Search</b-button>
 
-                    <b-nav-item v-if="signedIn"><b-button variant="primary">Profile</b-button></b-nav-item>
                     <b-nav-item v-if="signedIn"><b-button @click="signOut">Sign Out</b-button></b-nav-item>
                     <b-nav-item v-else><b-button><router-link :to="{ name: 'Login' }" style="text-decoration:none;color:white;">Login / Register</router-link></b-button></b-nav-item>
                 </b-nav-form>
             </b-navbar-nav>
             </b-collapse>
         </b-navbar>
-
-        <a class="float" v-show="signedIn"><router-link :to="{ name: 'AddPost' }" style="text-decoration:none;color:white;"><h5>Create Post</h5></router-link></a>
     </div>
 </template>
 
@@ -63,29 +60,4 @@ export default {
 </script>
 
 <style scoped>
-.float {
-    position: fixed;
-    width: 150px;
-    height: 60px;
-    bottom: 100px;
-    right: 0px;
-    left: 0px;
-    margin-right: auto;
-    margin-left: auto;
-    background-color:#dc3545;
-    color:#FFF;
-    border-radius:15px;
-	text-align: center;
-	box-shadow: 2px 2px 3px #999;
-    text-decoration: none;
-    z-index: 1;
-}
-.float:hover {
-    background-color: #c82333;
-}
-
-.float h5 {
-    vertical-align: center;
-    padding: 17px;
-}
 </style>
