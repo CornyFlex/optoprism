@@ -41,12 +41,12 @@
           drop-placeholder="Drop file here..."
           @change="previewImage"
           accept="image/*"
-          v-model="file1"
-          :state="Boolean(file1)"
+          v-model="checkIfImageSet"
+          :state="Boolean(checkIfImageSet)"
           required
         ></b-form-file>
         <div class="mt-3">
-          Selected file: {{ file1 ? file1.name : "" }}<br />
+          Selected file: {{ checkIfImageSet ? checkIfImageSet.name : "" }}<br />
         </div>
 
         <div v-if="imageData != null">
@@ -54,6 +54,8 @@
           <br />
         </div>
       </b-form-group>
+
+      <div class="error" v-if="error"> {{ this.error }} </div>
 
       <b-form-group style="text-align: left">
         <b-button
@@ -83,6 +85,7 @@
 import firebase from "firebase";
 import { gmapApi } from "vue2-google-maps";
 import { markerRef } from "../main";
+import "@firebase/auth";
 
 export default {
   firebase: {
@@ -94,17 +97,30 @@ export default {
     title: "",
     description: "",
     img1: "",
-    file1: "",
+    checkIfImageSet: "",
     imageData: null,
 
     //form validation
     savingSuccessful: false,
+    error: '',
 
     //location
     currentPlace: null,
     places: [],
     markers: [],
+
+    //user
+    createdBy: "",
   }),
+  created() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.createdBy = user.email;
+      } else {
+        this.createdBy = ''
+      }
+    });
+  },
   mounted() {
     this.geolocate;
   },
@@ -116,6 +132,13 @@ export default {
       this.currentPlace = place;
     },
     create() {
+
+      if (!this.currentPlace) return this.error = "Location not set! Try again."
+      if (!this.title) return this.error = "Title not set! Try again."
+      if (!this.description) return this.error = "Description not set! Try again."
+      if (!this.img1) return this.error = "Image not properly set! Try again."
+      if (!this.$refs.gmapAutocomplete.$refs.input.value) return this.error = "Location not set! Please try again."
+
       var post = {
         photo: this.img1,
         title: this.title,
@@ -125,6 +148,7 @@ export default {
           lng: this.currentPlace.geometry.location.lng(),
         },
         address: this.$refs.gmapAutocomplete.$refs.input.value,
+        createdBy: this.createdBy
       };
 
       markerRef
@@ -137,7 +161,7 @@ export default {
           this.title = "";
           this.description = "";
           this.img1 = "";
-          this.file1 = "";
+          this.checkIfImageSet = "";
           this.$refs.gmapAutocomplete.$refs.input.value = "";
           this.currentPlace = "";
 
@@ -146,13 +170,17 @@ export default {
           this.$router.push("/");
         })
         .catch((err) => {
-          //log error
-          console.log(err);
+          this.error = err.message;
         });
     },
     previewImage(event) {
       this.uploadValue = 0;
       this.img1 = null;
+      if (event.target.files[0].size > 1024000) {
+        this.error = "File size too big, keep files under 1MB!"
+        this.img1 = ""
+        return
+      }
       this.imageData = event.target.files[0];
       this.onUpload();
     },
@@ -169,8 +197,8 @@ export default {
           this.uploadValue =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         },
-        (error) => {
-          console.log(error.message);
+        (err) => {
+          this.error = err.message
         },
         () => {
           this.uploadValue = 100;
@@ -205,5 +233,11 @@ img {
 .field_location {
   width: 100%;
   padding: 10px 10px;
+}
+.error {
+  color: red;
+  text-align: center;
+  font-size: 20px;
+  padding: 0px 0px 10px 0px;
 }
 </style>

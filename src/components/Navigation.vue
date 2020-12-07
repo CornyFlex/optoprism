@@ -14,8 +14,7 @@
             <!-- Right aligned nav items -->
             <b-navbar-nav class="ml-auto">
                 <b-nav-form>
-                    <b-form-input size="md" class="mr-sm-2" placeholder="Search city"></b-form-input>
-                    <b-button size="md" class="my-2 my-sm-0" type="submit" variant="danger">Search</b-button>
+                    <b-nav-item disabled v-if="signedIn">{{ username }}</b-nav-item>
 
                     <b-nav-item v-if="signedIn"><b-button @click="signOut">Sign Out</b-button></b-nav-item>
                     <b-nav-item v-else><b-button><router-link :to="{ name: 'Login' }" style="text-decoration:none;color:white;">Login / Register</router-link></b-button></b-nav-item>
@@ -35,6 +34,7 @@ export default {
         firebase.auth().onAuthStateChanged(user=> {
             if(user) {
                 this.signedIn = true;
+                this.username = user.email;
             } else {
                 this.signedIn = false;
             }
@@ -42,7 +42,8 @@ export default {
     },
     data() {
         return {
-            signedIn: false
+            signedIn: false,
+            username: ''
         }
     },
     methods: {

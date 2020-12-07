@@ -26,7 +26,7 @@
           v-model="password"
         ></b-form-input>
       </b-form-group>
-      <div v-if="error" class="error">{{ error.message }}</div>
+      <div v-if="error" class="error">{{ this.error }}</div>
       <b-form-group id="already-registered">
         Already have an account? Login <router-link :to="{ name: 'Login' }">here</router-link>
       </b-form-group>
@@ -44,11 +44,14 @@ export default {
   methods: {
     async pressed(){
       try {
-        const user = firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+        if (this.password.length < 6) {
+          return this.error = "Password needs to be at least 6 characters long."
+        }
+        const user = await firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
         console.log(user)
         this.$router.replace({name: 'Login'})
-      }catch(error){
-        console.log(error)
+      }catch(err){
+        this.error = err.message
       }
     }
   },
@@ -65,5 +68,11 @@ export default {
 .registerForm {
   width: 50%;
   margin: 15% auto;
+}
+
+.error {
+  text-align: center;
+  color: red;
+  padding: 10px 0px;
 }
 </style>

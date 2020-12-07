@@ -26,7 +26,7 @@
         ></b-form-input>
       </b-form-group>
 
-      <div v-if="error" class="error">{{ error.message }}</div>
+      <div v-if="error" class="error">{{ this.error }}</div>
       <b-form-group id="not-registered">
         Not registered? Register <router-link :to="{ name: 'Register' }">here</router-link>
       </b-form-group>
@@ -51,11 +51,11 @@ export default {
   methods: {
     async pressed() {
       try {
-        const loginValue = await firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-        console.log(loginValue)
-        this.$router.replace({name: 'MainMap'})
-      } catch(error){
-        console.log(error)
+        if (await firebase.auth().signInWithEmailAndPassword(this.email, this.password)){
+          this.$router.replace({name: 'MainMap'})
+        }
+      } catch(err){
+        this.error = err.message
       }
     }
   }
@@ -66,5 +66,11 @@ export default {
 .loginForm {
   width: 50%;
   margin: 15% auto;
+}
+
+.error {
+  text-align: center;
+  color: red;
+  padding: 10px 0px;
 }
 </style>

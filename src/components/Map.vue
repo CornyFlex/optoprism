@@ -46,6 +46,7 @@ export default {
     return {
       // check for sign in:
       signedIn: false,
+      username: '',
 
       // map information:
       map: null,
@@ -109,6 +110,7 @@ export default {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.signedIn = true;
+        this.username = user.email;
       } else {
         this.signedIn = false;
       }
@@ -155,7 +157,9 @@ export default {
       this.infoOptions.content = `<p style="color:black;font-size:20px;font-weight:bold;padding-top:5px;">${marker.title}</p>
             <p style="font-size: 15px;color:black;">${marker.address}</p>
             <br/>
-            <div style="width:300px;text-align:center;">
+            <p style="font-size:15px;color:gray;">Created by: ${marker.createdBy}</p>
+            <br/>
+            <div style="width:300px;text-align:center;margin:0 auto;">
                 <img src="${marker.photo}" style="width:100%;"/>
             </div>`;
         console.log(marker.photo);

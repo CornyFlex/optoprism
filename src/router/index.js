@@ -7,13 +7,13 @@ import Gallery from '../views/Gallery.vue'
 
 const routes = [{
         path: '/',
-        name: 'MainMap',
-        component: MainMap
-    },
-    {
-        path: '/about',
         name: 'About',
         component: About
+    },
+    {
+        path: '/map',
+        name: 'MainMap',
+        component: MainMap
     },
     {
         path: '/login',
