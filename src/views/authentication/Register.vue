@@ -49,7 +49,7 @@ export default {
         }
         const user = await firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
         console.log(user)
-        this.$router.replace({name: 'Login'})
+        this.$router.replace({name: 'MainMap'})
       }catch(err){
         this.error = err.message
       }
